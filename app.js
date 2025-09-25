@@ -25,7 +25,7 @@
     this.textContent = 'Please wait...'
     this.setAttribute('disabled', 'disabled');
 
-    fetch(`${workflowUrl}-test/post-theraphy`, {
+    fetch(`${workflowUrl}/post-theraphy`, {
       method: 'POST',
       body: formData,
     })
@@ -33,5 +33,6 @@
     .then(console.log)
     .catch(console.error);
   });
+
 
 })();
