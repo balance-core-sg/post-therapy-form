@@ -30,9 +30,13 @@
       body: formData,
     })
     .then(response => response.json())
-    .then(console.log)
+    .then(response => {
+      this.textContent = 'Done'
+      this.setAttribute('disabled', 'disabled');
+    })
     .catch(console.error);
   });
 
 
 })();
+
