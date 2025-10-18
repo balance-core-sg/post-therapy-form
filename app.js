@@ -1,6 +1,6 @@
-(function(){
-  const workflowUrl = 'https://balancecore.n8n.superlazy.ai/webhook';
+const workflowUrl = 'https://balancecore.n8n.superlazy.ai/webhook';
 
+(function(){
   fetch(`${workflowUrl}/clients`)
     .then(response => response.json())
     .then(({ data: clients }) => {
@@ -19,7 +19,7 @@
     return schema.validate(data, { abortEarly: false }); // show all errors
   }
 
-  document.querySelector('button[name="submit"]').addEventListener('click', function(e){
+  document.querySelector('button[name="submit"]').addEventListener('click', async function(e){
     e.preventDefault();
     const clientPhone = document.getElementById('client').value;
     const clientName = document.querySelector(`option[value="${clientPhone}"]`).text;
@@ -50,10 +50,17 @@
     formData.append('key_points', keyPoints);
     formData.append('homework', homework);
 
+    const audioSrc = document.querySelector('audio').getAttribute('src');
+    if (audioSrc) {
+      const audioResponse = await fetch(audioSrc);
+      const audioBlob = await audioResponse.blob();
+      formData.append('file[]', audioBlob);
+    }
+
     const attachments = document.getElementById('file').files;
     for(let i = 0; i < attachments.length; i++) {
       const attachment = attachments[i];
-      formData.append(`file[]`, attachment);
+      formData.append('file[]', attachment);
     }
 
     this.textContent = 'Please wait...'
