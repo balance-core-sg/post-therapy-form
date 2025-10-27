@@ -1,6 +1,8 @@
 let mediaRecorder;
 let audioChunks = [];
 let audioBlob;
+let recordTimerInterval;
+let recordSeconds = 0;
 
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
@@ -39,6 +41,27 @@ async function transcribeAudio() {
   }
 }
 
+
+const updateRecordButtonLabel = () => {
+  const minutes = String(Math.floor(recordSeconds / 60)).padStart(2, '0');
+  const seconds = String(recordSeconds % 60).padStart(2, '0');
+  startBtn.textContent = `${minutes}:${seconds}`;
+}
+
+const startRecordingTimer = () => {
+  recordSeconds = 0;
+  updateRecordButtonLabel();
+  recordTimerInterval = setInterval(() => {
+    recordSeconds++;
+    updateRecordButtonLabel();
+  }, 1000);
+}
+
+const stopRecordingTimer = () => {
+  clearInterval(recordTimerInterval);
+  startBtn.textContent = 'Record';
+}
+
 const record = async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -50,6 +73,7 @@ const record = async () => {
     };
 
     mediaRecorder.onstop = () => {
+      stopRecordingTimer();
       audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
       const audioUrl = URL.createObjectURL(audioBlob);
       audioPlayback.src = audioUrl;
@@ -59,6 +83,8 @@ const record = async () => {
     };
 
     mediaRecorder.start();
+    startRecordingTimer();
+
     startBtn.disabled = true;
     transcribeBtn.disabled = true;
     stopBtn.disabled = false;
