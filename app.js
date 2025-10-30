@@ -33,6 +33,7 @@ let clients = [];
     const errors = validateForm({
       clientPhone,
       clientName,
+      clientEmail,
       keyPoints,
       homework
     });
@@ -86,4 +87,5 @@ let clients = [];
   });
 
 })();
+
 
