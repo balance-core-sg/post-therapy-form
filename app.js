@@ -14,6 +14,7 @@ let clients = [];
     const schema = joi.object({
       clientPhone: joi.string().required(),
       clientName: joi.string().required(),
+      clientEmail: joi.string().required(),
       keyPoints: joi.string().allow('', null),
       homework: joi.string().allow('', null),
     });
@@ -85,3 +86,4 @@ let clients = [];
   });
 
 })();
+
