@@ -28,14 +28,14 @@ let clients = [];
     const clientName = document.querySelector(`option[value="${clientPhone}"]`).text;
     const clientEmail = clients.find(client => client['Phone Number']?.toString() === clientPhone)?.Email || '';
     const keyPoints = document.getElementById('key_points').value || '';
-    const homework = document.getElementById('homework').value || '';
+    const homework = null;
 
     const errors = validateForm({
       clientPhone,
       clientName,
       clientEmail,
       keyPoints,
-      homework
+      homework,
     });
 
     if (errors?.error?.details) {
